@@ -28,7 +28,7 @@ class STIDRunner(TrafficRunner):
             torch.Tensor: reshaped data with shape [B, L, N, C]
         """
         # select feature using self.target_features
-        data = data[:, :, :, self.target_features]
+        data = data[:, :, :, 0:1]
         return data
 
     def forward(self, data: tuple, epoch:int = None, iter_num: int = None, train:bool = True, **kwargs) -> tuple:
@@ -44,6 +44,7 @@ class STIDRunner(TrafficRunner):
             tuple: (prediction, real_value)
         """
         # preprocess
+        # print(self.target_features)
         future_data, history_data = data
         history_data    = self.to_running_device(history_data)      # B, L, N, C
         future_data     = self.to_running_device(future_data)       # B, L, N, C
